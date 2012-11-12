@@ -2180,15 +2180,6 @@ void tresExp(int operando){
 
 void cuatroExp(){
 
-
-  
-  printf("PilaO \n");
-  printStack( PilaO );
-  printf("POper \n");
-  printStack( POper );
-  printf("_________________________\n");
-  sleep (10);
-  
   if ( POper == NULL ) {
       //puts( "The stack is empty.\n" );
    } // end if
