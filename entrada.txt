@@ -5,7 +5,18 @@ program Algo {
 	int algoos;
 
 	function int Main (){
-		if (algo +3 = 3+4-23){
+		if (algo = 3+4-23){
+		}
+
+		if (algo = 3+4-23){
+		}
+		if (algo = 3+4-23){
+		}
+		if (algo = 3+4-23){
+		}
+		if (algo = 3+4-23){
+		}
+		if (algo = 3+4-23){
 		}
 	}
 }

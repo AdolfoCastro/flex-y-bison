@@ -33,6 +33,7 @@
   char *nomConsInt;
   char *nomConsFloat;
 
+  StackNodePtr apuntadorApOper;
 
 
   int esSumaResta;
@@ -233,12 +234,12 @@ r:COMA q;
 r:vacio;
 
 /**********exp*************/
-exp:T {cuatroExp();}s t;
+exp:T s t;
 
 s:MAS{dosExp(1);};
 s:MENOS{dosExp(2);};
 s:vacio;
-t:T s t;
+t:T{cuatroExp();}s t;
 t:vacio;
 
 T: F u v;
@@ -437,13 +438,21 @@ void tresExp(int operando){
 }
 
 void cuatroExp(){
-  StackNodePtr currentPtr;
-  currentPtr = POper;
-  if ( currentPtr == NULL ) {
+
+
+  
+  printf("PilaO \n");
+  printStack( PilaO );
+  printf("POper \n");
+  printStack( POper );
+  printf("_________________________\n");
+  sleep (10);
+  
+  if ( POper == NULL ) {
       //puts( "The stack is empty.\n" );
    } // end if
   else { 
-    esSumaResta = currentPtr->data;
+    esSumaResta = POper->data;
     if ( esSumaResta == 1|| esSumaResta == 2){
       pop ( &PTipos );
       pop ( &PTipos );
