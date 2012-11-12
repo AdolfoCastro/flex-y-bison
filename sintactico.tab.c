@@ -1737,7 +1737,7 @@ yyreduce:
 
   case 75:
 #line 236 "sintactico.y"
-    {cuatroExp();printf("entra\n");;}
+    {cuatroExp();;}
     break;
 
   case 77:
@@ -2180,13 +2180,11 @@ void tresExp(int operando){
 void cuatroExp(){
   StackNodePtr currentPtr;
   currentPtr = POper;
-  printf("exp\n");
   if ( currentPtr == NULL ) {
       //puts( "The stack is empty.\n" );
    } // end if
   else { 
     esSumaResta = currentPtr->data;
-    printf("%d\n", esSumaResta);
     if ( esSumaResta == 1|| esSumaResta == 2){
       pop ( &PTipos );
       pop ( &PTipos );

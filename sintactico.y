@@ -233,7 +233,7 @@ r:COMA q;
 r:vacio;
 
 /**********exp*************/
-exp:T {cuatroExp();printf("entra\n");}s t;
+exp:T {cuatroExp();}s t;
 
 s:MAS{dosExp(1);};
 s:MENOS{dosExp(2);};
@@ -439,13 +439,11 @@ void tresExp(int operando){
 void cuatroExp(){
   StackNodePtr currentPtr;
   currentPtr = POper;
-  printf("exp\n");
   if ( currentPtr == NULL ) {
       //puts( "The stack is empty.\n" );
    } // end if
   else { 
     esSumaResta = currentPtr->data;
-    printf("%d\n", esSumaResta);
     if ( esSumaResta == 1|| esSumaResta == 2){
       pop ( &PTipos );
       pop ( &PTipos );
