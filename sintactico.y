@@ -23,8 +23,12 @@
   void dosExp(int operando);
   void tresExp(int operando);
   void cuatroExp();
-
+  void cincoExp();
+  void seisExp();
+  void sieteExp();
   void ochoExp();
+  void nueveExp();
+
 	int memoriaInt();
   int operando;
   int gltc;
@@ -36,7 +40,7 @@
   StackNodePtr apuntadorApOper;
 
 
-  int esSumaResta;
+  int esSumResMulDiv;
 
   char *nombrefuncion;
   TproNodoPtr startProList = NULL;
@@ -223,7 +227,7 @@ ciclo:{eragltc=gltc; gltc=3;}FOR PARA expresion PARC LLAVEA bloque LLAVEC{gltc=e
 
 /**********expresion*************/
 expresion: exp p;
-p:easignacion exp;
+p:easignacion exp {nueveExp();};
 p:vacio;
 
 /**********llamada*************/
@@ -246,11 +250,11 @@ T: F u v;
 u:ASTE{tresExp(3);};
 u:SLASH{tresExp(4);};
 u:vacio;
-v: F u v;
+v: F{cincoExp();}u v;
 v:vacio;
 
 F:w;
-w:PARA exp PARC;
+w:PARA{seisExp();} exp PARC{sieteExp();};
 w:{eragltc=gltc; gltc=4;} z {gltc=eragltc;};
 z:NVAR;
 z:CINT{unoExpInt(" ");};
@@ -438,13 +442,12 @@ void tresExp(int operando){
 }
 
 void cuatroExp(){
-
   if ( POper == NULL ) {
       //puts( "The stack is empty.\n" );
    } // end if
   else { 
-    esSumaResta = POper->data;
-    if ( esSumaResta == 1|| esSumaResta == 2){
+    esSumResMulDiv = POper->data;
+    if ( esSumResMulDiv == 1|| esSumResMulDiv == 2){
       pop ( &PTipos );
       pop ( &PTipos );
       printf ("%d ", POper->data);
@@ -459,6 +462,34 @@ void cuatroExp(){
       contEntTmp++;
     }
   }
+}
+void cincoExp(){
+  if ( POper == NULL ) {
+      //puts( "The stack is empty.\n" );
+   } // end if
+  else { 
+    esSumResMulDiv = POper->data;
+    if ( esSumResMulDiv == 3 || esSumResMulDiv == 4){
+      pop ( &PTipos );
+      pop ( &PTipos );
+      printf ("%d ", POper->data);
+      pop(&POper);
+      printf("%d ", PilaO->data);
+      pop(&PilaO);
+      printf("%d ", PilaO->data);
+      pop(&PilaO);
+      push(&PTipos,1);
+      push(&PilaO, contEntTmp);
+      printf("%d\n", contEntTmp );
+      contEntTmp++;
+    }
+  }
+}
+void seisExp(){
+  push(&POper, 9);
+}
+void sieteExp(){
+  pop(&POper);
 }
 
 void ochoExp(eAsigna){
@@ -477,6 +508,25 @@ void ochoExp(eAsigna){
       break;
   }
 }
+
+void nueveExp(){
+   if ( POper == NULL ) {
+      //puts( "The stack is empty.\n" );
+   } // end if
+  else { 
+    esSumResMulDiv = POper->data;
+    if ( esSumResMulDiv == 5 || esSumResMulDiv == 6 || esSumResMulDiv == 7|| esSumResMulDiv == 8 ){
+      pop ( &PTipos );
+      printf ("%d ", POper->data);
+      pop(&POper);
+      printf("%d ", PilaO->data);
+      pop(&PilaO);
+      printf("%d \n", PilaO->data);
+      pop(&PilaO);
+    }
+  }
+}
+
 void yyerror(char *s)
 {
   printf("Error sintactico %s \n",s);
