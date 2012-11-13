@@ -6,6 +6,7 @@ program Algo {
 
 	function int Main (){
 		int algo;
+		int alogss;
 		if (algo = 3*4/3){
 		}
 	}

@@ -2294,7 +2294,6 @@ void nueveExp(){
       pop(&PilaO);
       printf("%d \n", PilaO->data);
       pop(&PilaO);
-      pop(&PilaO);
     }
   }
 }
