@@ -1,13 +1,11 @@
 program Algo {
 
 	int algo;
-	int algo;
 	int algoos;
 
-	function int Main (){
-		if (algo + x = 3+4-23){
-		}
 
+	function int Main (){
+		int algo;
 		if (algo = 3*4/3){
 		}
 	}

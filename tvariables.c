@@ -46,6 +46,10 @@ void insertPro(TproNodoPtr *sPtr, char *nombre, int tipo, int dir)
       newProPtr->dirBase = dir;
       newProPtr->headTvarPtr = malloc(sizeof(TvarNodo));
       newProPtr->nextProPtr = NULL; // node does not link to another node
+      newProPtr->headTvarPtr->nombreVariable = "0";
+      newProPtr->headTvarPtr->tipoDato = 0;
+      newProPtr->headTvarPtr->direccion = 0;
+
 
       previousProPtr = NULL;
       currentProPtr = *sPtr;
@@ -77,9 +81,9 @@ void printTables( TproNodoPtr currentProPtr )
          printf( "%s - %d - %d - %p \n", currentProPtr->nombreFuncion, currentProPtr->tipoRetorno, currentProPtr->dirBase, currentProPtr->headTvarPtr);
          while( currentProPtr->headTvarPtr != NULL)
          {
-            if(currentProPtr->headTvarPtr->nombreVariable != NULL){
+            //if(currentProPtr->headTvarPtr->nombreVariable != NULL){
                printf( "%s - %d - %d\n", currentProPtr->headTvarPtr->nombreVariable, currentProPtr->headTvarPtr->tipoDato, currentProPtr->headTvarPtr->direccion);
-            }
+            //}
             currentProPtr->headTvarPtr = currentProPtr->headTvarPtr->nextPtr;
          }
          printf("\n");
@@ -172,7 +176,7 @@ void existeVar(TvarNodoPtr currentPtr, TvarNodoPtr previousPtr, char *nombre)
    TvarNodoPtr existePtr;
    existePtr = currentPtr;
    int i;
-   while ( existePtr == NULL ) {
+   while ( existePtr != NULL ) {
       i = strcmp (nombre, existePtr->nombreVariable);
       //printf("%s-%s",nombre,existePtr->nombreVariable);
       if (i == 0){

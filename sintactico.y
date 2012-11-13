@@ -28,6 +28,7 @@
   void sieteExp();
   void ochoExp();
   void nueveExp();
+  void diezExp(char *nombre);
 
 	int memoriaInt();
   int operando;
@@ -256,7 +257,7 @@ v:vacio;
 F:w;
 w:PARA{seisExp();} exp PARC{sieteExp();};
 w:{eragltc=gltc; gltc=4;} z {gltc=eragltc;};
-z:NVAR;
+z:NVAR{diezExp($1);};
 z:CINT{unoExpInt(" ");};
 z:CFLOAT{unoExpFloat(" ");};
 z:COMILLA CSTR COMILLA{unoExpStr(" ");};
@@ -523,8 +524,30 @@ void nueveExp(){
       pop(&PilaO);
       printf("%d \n", PilaO->data);
       pop(&PilaO);
+      pop(&PilaO);
     }
   }
+}
+
+void diezExp(char *nombre){
+    TvarNodoPtr existePtr;
+    existePtr = startProList->headTvarPtr;
+    int esta = 0;
+    int i;
+
+    while ( existePtr != NULL ) {
+      i = strcmp (nombre, existePtr->nombreVariable);
+       //printf("%s-%s",nombre,existePtr->nombreVariable);
+      if (i == 0){
+         push ( &PilaO, existePtr->direccion);
+         esta = 1;
+      }
+      existePtr = existePtr->nextPtr;   
+      } // end while
+    if(esta != 1){
+      printf("la variable '%s' no existe  %s\n",nombre,existePtr->nombreVariable);
+      exit(EXIT_FAILURE);
+    }
 }
 
 void yyerror(char *s)
