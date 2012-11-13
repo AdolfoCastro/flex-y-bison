@@ -10,7 +10,6 @@
   #include "stack.c"
   #include "tvariables.c"
 
-
 	extern int yylex(void);
 	extern char *yytext;
 	extern int linea;
@@ -257,7 +256,7 @@ v:vacio;
 F:w;
 w:PARA{seisExp();} exp PARC{sieteExp();};
 w:{eragltc=gltc; gltc=4;} z {gltc=eragltc;};
-z:NVAR{};
+z:NVAR;
 z:CINT{unoExpInt(" ");};
 z:CFLOAT{unoExpFloat(" ");};
 z:COMILLA CSTR COMILLA{unoExpStr(" ");};
@@ -527,7 +526,6 @@ void nueveExp(){
     }
   }
 }
-void diez(){}
 
 void yyerror(char *s)
 {

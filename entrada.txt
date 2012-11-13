@@ -1,14 +1,14 @@
 program Algo {
 
 	int algo;
+	int algo;
 	int algoos;
 
 	function int Main (){
-		int esta;
-		if (algo = 3+4-23){
+		if (algo + x = 3+4-23){
 		}
-	}
-	function int Dos(){
 
+		if (algo = 3*4/3){
+		}
 	}
 }

@@ -165,7 +165,6 @@
   #include "stack.c"
   #include "tvariables.c"
 
-
 	extern int yylex(void);
 	extern char *yytext;
 	extern int linea;
@@ -222,14 +221,14 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 53 "sintactico.y"
+#line 52 "sintactico.y"
 {
   float real;
   int numero;
   char* texto;
 }
 /* Line 193 of yacc.c.  */
-#line 233 "sintactico.tab.c"
+#line 232 "sintactico.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -242,7 +241,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 246 "sintactico.tab.c"
+#line 245 "sintactico.tab.c"
 
 #ifdef short
 # undef short
@@ -568,17 +567,17 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   109,   109,   109,   109,   109,   110,   111,   112,   113,
-     116,   134,   135,   136,   154,   156,   157,   158,   159,   162,
-     163,   164,   165,   168,   171,   172,   173,   174,   175,   178,
-     179,   180,   183,   184,   185,   186,   187,   188,   189,   192,
-     192,   195,   195,   196,   197,   198,   199,   200,   203,   203,
-     204,   205,   206,   207,   210,   211,   212,   213,   214,   217,
-     218,   219,   220,   221,   224,   227,   227,   230,   231,   232,
-     235,   236,   237,   238,   239,   242,   244,   245,   246,   247,
-     247,   248,   250,   251,   252,   253,   254,   254,   255,   257,
-     258,   258,   259,   259,   260,   261,   262,   263,   267,   268,
-     269,   270,   277,   278,   279,   282,   283,   284,   285,   288
+       0,   108,   108,   108,   108,   108,   109,   110,   111,   112,
+     115,   133,   134,   135,   153,   155,   156,   157,   158,   161,
+     162,   163,   164,   167,   170,   171,   172,   173,   174,   177,
+     178,   179,   182,   183,   184,   185,   186,   187,   188,   191,
+     191,   194,   194,   195,   196,   197,   198,   199,   202,   202,
+     203,   204,   205,   206,   209,   210,   211,   212,   213,   216,
+     217,   218,   219,   220,   223,   226,   226,   229,   230,   231,
+     234,   235,   236,   237,   238,   241,   243,   244,   245,   246,
+     246,   247,   249,   250,   251,   252,   253,   253,   254,   256,
+     257,   257,   258,   258,   259,   260,   261,   262,   266,   267,
+     268,   269,   276,   277,   278,   281,   282,   283,   284,   287
 };
 #endif
 
@@ -1622,27 +1621,27 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 109 "sintactico.y"
+#line 108 "sintactico.y"
     {gltc=1;;}
     break;
 
   case 3:
-#line 109 "sintactico.y"
+#line 108 "sintactico.y"
     {insertPro(&startProList,"Global",5,1);;}
     break;
 
   case 4:
-#line 109 "sintactico.y"
+#line 108 "sintactico.y"
     {gltc=2;;}
     break;
 
   case 5:
-#line 109 "sintactico.y"
+#line 108 "sintactico.y"
     {printf("Programa hecho \n");;}
     break;
 
   case 10:
-#line 116 "sintactico.y"
+#line 115 "sintactico.y"
     {
   if (estipo==1){
     unoExpInt((yyvsp[(2) - (5)].texto));
@@ -1664,7 +1663,7 @@ yyreduce:
     break;
 
   case 13:
-#line 136 "sintactico.y"
+#line 135 "sintactico.y"
     {
   if (estipo==1){
     unoExpInt((yyvsp[(2) - (3)].texto));
@@ -1686,163 +1685,158 @@ yyreduce:
     break;
 
   case 19:
-#line 162 "sintactico.y"
+#line 161 "sintactico.y"
     {estipo=1;;}
     break;
 
   case 20:
-#line 163 "sintactico.y"
+#line 162 "sintactico.y"
     {estipo=2;;}
     break;
 
   case 21:
-#line 164 "sintactico.y"
+#line 163 "sintactico.y"
     {estipo=3;;}
     break;
 
   case 22:
-#line 165 "sintactico.y"
+#line 164 "sintactico.y"
     {estipo=4;;}
     break;
 
   case 39:
-#line 192 "sintactico.y"
+#line 191 "sintactico.y"
     {insertPro(&startProList,"main",estipo,1);;}
     break;
 
   case 40:
-#line 192 "sintactico.y"
+#line 191 "sintactico.y"
     {/*printf("funcion \n");*/;}
     break;
 
   case 41:
-#line 195 "sintactico.y"
+#line 194 "sintactico.y"
     {insertPro(&startProList,(yyvsp[(3) - (3)].texto),estipo,1);;}
     break;
 
   case 42:
-#line 195 "sintactico.y"
+#line 194 "sintactico.y"
     {/*printf("funcion \n");*/;}
     break;
 
   case 48:
-#line 203 "sintactico.y"
+#line 202 "sintactico.y"
     {eragltc=gltc; gltc=3;;}
     break;
 
   case 49:
-#line 203 "sintactico.y"
+#line 202 "sintactico.y"
     {gltc=eragltc;}
     break;
 
   case 65:
-#line 227 "sintactico.y"
+#line 226 "sintactico.y"
     {eragltc=gltc; gltc=3;;}
     break;
 
   case 66:
-#line 227 "sintactico.y"
+#line 226 "sintactico.y"
     {gltc=eragltc;}
     break;
 
   case 68:
-#line 231 "sintactico.y"
+#line 230 "sintactico.y"
     {nueveExp();;}
     break;
 
   case 76:
-#line 244 "sintactico.y"
+#line 243 "sintactico.y"
     {dosExp(1);;}
     break;
 
   case 77:
-#line 245 "sintactico.y"
+#line 244 "sintactico.y"
     {dosExp(2);;}
     break;
 
   case 79:
-#line 247 "sintactico.y"
+#line 246 "sintactico.y"
     {cuatroExp();;}
     break;
 
   case 83:
-#line 251 "sintactico.y"
+#line 250 "sintactico.y"
     {tresExp(3);;}
     break;
 
   case 84:
-#line 252 "sintactico.y"
+#line 251 "sintactico.y"
     {tresExp(4);;}
     break;
 
   case 86:
-#line 254 "sintactico.y"
+#line 253 "sintactico.y"
     {cincoExp();;}
     break;
 
   case 90:
-#line 258 "sintactico.y"
+#line 257 "sintactico.y"
     {seisExp();;}
     break;
 
   case 91:
-#line 258 "sintactico.y"
+#line 257 "sintactico.y"
     {sieteExp();;}
     break;
 
   case 92:
-#line 259 "sintactico.y"
+#line 258 "sintactico.y"
     {eragltc=gltc; gltc=4;;}
     break;
 
   case 93:
-#line 259 "sintactico.y"
+#line 258 "sintactico.y"
     {gltc=eragltc;;}
     break;
 
-  case 94:
-#line 260 "sintactico.y"
-    {;}
-    break;
-
   case 95:
-#line 261 "sintactico.y"
+#line 260 "sintactico.y"
     {unoExpInt(" ");;}
     break;
 
   case 96:
-#line 262 "sintactico.y"
+#line 261 "sintactico.y"
     {unoExpFloat(" ");;}
     break;
 
   case 97:
-#line 263 "sintactico.y"
+#line 262 "sintactico.y"
     {unoExpStr(" ");;}
     break;
 
   case 98:
-#line 267 "sintactico.y"
+#line 266 "sintactico.y"
     {ochoExp(5);;}
     break;
 
   case 99:
-#line 268 "sintactico.y"
+#line 267 "sintactico.y"
     {ochoExp(6);;}
     break;
 
   case 100:
-#line 269 "sintactico.y"
+#line 268 "sintactico.y"
     {ochoExp(7);;}
     break;
 
   case 101:
-#line 270 "sintactico.y"
+#line 269 "sintactico.y"
     {ochoExp(8);;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1846 "sintactico.tab.c"
+#line 1840 "sintactico.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2056,7 +2050,7 @@ yyreturn:
 }
 
 
-#line 290 "sintactico.y"
+#line 289 "sintactico.y"
 
 /**************************************************************************
                       * Codigo C Adicional *
@@ -2297,7 +2291,6 @@ void nueveExp(){
     }
   }
 }
-void diez(){}
 
 void yyerror(char *s)
 {
