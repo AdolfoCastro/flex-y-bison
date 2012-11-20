@@ -4,7 +4,6 @@ struct cuadruplos{
 	int dirOperando1;
 	int dirResultado;
 	struct cuadruplos *nextPtr;
-	struct cuadruplos *previousPtr;
 };
 typedef struct cuadruplos Cuadruplos;
 typedef Cuadruplos *CuadruplosPtr;

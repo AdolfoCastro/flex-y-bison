@@ -11,6 +11,7 @@
   #include "tvariables.c"
   #include "cuadruplos.c"
   #include "semantica.c"
+  #include "tabcons.c"
 
 	extern int yylex(void);
 	extern char *yytext;
@@ -40,6 +41,11 @@
   char *nomConsInt;
   char *nomConsFloat;
 
+  void unoExpIntCons(int valor);
+  void unoExpFloatCons(int valor);
+  void unoExpStrCons(int valor);
+  void unoExpBoolCons(int valor);
+
   StackNodePtr apuntadorApOper;
 
   int esSumResMulDiv;
@@ -47,6 +53,7 @@
   char *nombrefuncion;
   TproNodoPtr startProList = NULL;
   CuadruplosPtr  startCuadruplos =  NULL;
+  TabConsPtr startTabCons = NULL;
 %}
 /*******************************************************************
                        Declaraciones de Bison *
@@ -262,9 +269,9 @@ F:w;
 w:PARA{seisExp();} exp PARC{sieteExp();};
 w:{eragltc=gltc; gltc=4;} z {gltc=eragltc;};
 z:NVAR{diezExp($1);};
-z:CINT{unoExpInt(" ");};
-z:CFLOAT{unoExpFloat(" ");};
-z:COMILLA CSTR COMILLA{unoExpStr(" ");};
+z:CINT{unoExpIntCons($1);};
+z:CFLOAT{unoExpFloatCons($1);};
+z:COMILLA CSTR COMILLA{/*unoExpStrCons($2);*/};
 
 
 /**********easignacion*************/
@@ -343,9 +350,12 @@ void unoExpInt(char *nombre){
     insertVar(&startProList->headTvarPtr,nombre,estipo,contEntTmp);
     contEntTmp++;
   }
+}
+void unoExpIntCons(int valor){
   if (gltc==4){
     push (&PilaO,contEntCons);
     push(&PTipos,1);
+    insertTabCons (&startTabCons,valor,contEntCons);
     contEntCons++;
   }
 }
@@ -369,9 +379,12 @@ void unoExpFloat(char *nombre){
     insertVar(&startProList->headTvarPtr,nombre,estipo,contFlotTmp);
     contFlotTmp++;
   }
+}
+void unoExpFloatCons(int valor){
   if (gltc==4){
     push(&PilaO,contFlotCons);
     push(&PTipos,2);
+    insertTabCons (&startTabCons,valor,contFlotCons);
     contFlotCons++;
   }
 }
@@ -394,9 +407,12 @@ void unoExpStr(char *nombre){
     insertVar(&startProList->headTvarPtr,nombre,estipo,contStrTmp);
     contStrTmp++;
   }
+}
+void unoExpStrCons(int valor){
   if (gltc==4){
     push (&PilaO, contStrCons);
     push(&PTipos,3);
+    insertTabCons (&startTabCons,valor,contStrCons);
     contStrCons++;
   }
 }
@@ -419,9 +435,12 @@ void unoExpBool(char *nombre){
     insertVar(&startProList->headTvarPtr,nombre,estipo,contBoolTmp);
     contBoolTmp++;
   }
+}
+void unoExpBoolCons(int valor){
   if (gltc==4){
     push (&PilaO, contBoolCons);
     push(&PTipos,4);
+    insertTabCons (&startTabCons,valor,contBoolCons);
     contBoolCons++;
   }
 }
@@ -719,6 +738,7 @@ int main(int argc,char **argv){
 
   printTables( startProList );
   printCuadruplos ( startCuadruplos );
+  printTabCons( startTabCons);
   return 0;
 }
 /*****************************************************************/

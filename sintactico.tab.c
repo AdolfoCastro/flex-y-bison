@@ -166,6 +166,7 @@
   #include "tvariables.c"
   #include "cuadruplos.c"
   #include "semantica.c"
+  #include "tabcons.c"
 
 	extern int yylex(void);
 	extern char *yytext;
@@ -195,6 +196,11 @@
   char *nomConsInt;
   char *nomConsFloat;
 
+  void unoExpIntCons(int valor);
+  void unoExpFloatCons(int valor);
+  void unoExpStrCons(int valor);
+  void unoExpBoolCons(int valor);
+
   StackNodePtr apuntadorApOper;
 
   int esSumResMulDiv;
@@ -202,6 +208,7 @@
   char *nombrefuncion;
   TproNodoPtr startProList = NULL;
   CuadruplosPtr  startCuadruplos =  NULL;
+  TabConsPtr startTabCons = NULL;
 
 
 /* Enabling traces.  */
@@ -224,14 +231,14 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 55 "sintactico.y"
+#line 62 "sintactico.y"
 {
   float real;
   int numero;
   char* texto;
 }
 /* Line 193 of yacc.c.  */
-#line 235 "sintactico.tab.c"
+#line 242 "sintactico.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -244,7 +251,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 248 "sintactico.tab.c"
+#line 255 "sintactico.tab.c"
 
 #ifdef short
 # undef short
@@ -570,17 +577,17 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   111,   111,   111,   111,   111,   112,   113,   114,   115,
-     118,   136,   137,   138,   156,   158,   159,   160,   161,   164,
-     165,   166,   167,   170,   173,   174,   175,   176,   177,   180,
-     181,   182,   185,   186,   187,   188,   189,   190,   191,   194,
-     194,   197,   197,   198,   199,   200,   201,   202,   205,   205,
-     205,   207,   208,   209,   212,   212,   213,   214,   215,   216,
-     221,   222,   223,   224,   225,   228,   231,   231,   234,   235,
-     236,   239,   240,   241,   242,   243,   246,   248,   249,   250,
-     251,   251,   252,   254,   255,   256,   257,   258,   258,   259,
-     261,   262,   262,   263,   263,   264,   265,   266,   267,   271,
-     272,   273,   274,   286,   287,   288,   289,   292
+       0,   118,   118,   118,   118,   118,   119,   120,   121,   122,
+     125,   143,   144,   145,   163,   165,   166,   167,   168,   171,
+     172,   173,   174,   177,   180,   181,   182,   183,   184,   187,
+     188,   189,   192,   193,   194,   195,   196,   197,   198,   201,
+     201,   204,   204,   205,   206,   207,   208,   209,   212,   212,
+     212,   214,   215,   216,   219,   219,   220,   221,   222,   223,
+     228,   229,   230,   231,   232,   235,   238,   238,   241,   242,
+     243,   246,   247,   248,   249,   250,   253,   255,   256,   257,
+     258,   258,   259,   261,   262,   263,   264,   265,   265,   266,
+     268,   269,   269,   270,   270,   271,   272,   273,   274,   278,
+     279,   280,   281,   293,   294,   295,   296,   299
 };
 #endif
 
@@ -1621,27 +1628,27 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 111 "sintactico.y"
+#line 118 "sintactico.y"
     {gltc=1;;}
     break;
 
   case 3:
-#line 111 "sintactico.y"
+#line 118 "sintactico.y"
     {insertPro(&startProList,"Global",5,1);;}
     break;
 
   case 4:
-#line 111 "sintactico.y"
+#line 118 "sintactico.y"
     {gltc=2;;}
     break;
 
   case 5:
-#line 111 "sintactico.y"
+#line 118 "sintactico.y"
     {printf("Programa hecho \n");;}
     break;
 
   case 10:
-#line 118 "sintactico.y"
+#line 125 "sintactico.y"
     {
   if (estipo==1){
     unoExpInt((yyvsp[(2) - (5)].texto));
@@ -1663,7 +1670,7 @@ yyreduce:
     break;
 
   case 13:
-#line 138 "sintactico.y"
+#line 145 "sintactico.y"
     {
   if (estipo==1){
     unoExpInt((yyvsp[(2) - (3)].texto));
@@ -1685,168 +1692,168 @@ yyreduce:
     break;
 
   case 19:
-#line 164 "sintactico.y"
+#line 171 "sintactico.y"
     {estipo=1;;}
     break;
 
   case 20:
-#line 165 "sintactico.y"
+#line 172 "sintactico.y"
     {estipo=2;;}
     break;
 
   case 21:
-#line 166 "sintactico.y"
+#line 173 "sintactico.y"
     {estipo=3;;}
     break;
 
   case 22:
-#line 167 "sintactico.y"
+#line 174 "sintactico.y"
     {estipo=4;;}
     break;
 
   case 39:
-#line 194 "sintactico.y"
+#line 201 "sintactico.y"
     {insertPro(&startProList,"main",estipo,1);;}
     break;
 
   case 40:
-#line 194 "sintactico.y"
+#line 201 "sintactico.y"
     {/*printf("funcion \n");*/;}
     break;
 
   case 41:
-#line 197 "sintactico.y"
+#line 204 "sintactico.y"
     {insertPro(&startProList,(yyvsp[(3) - (3)].texto),estipo,1);;}
     break;
 
   case 42:
-#line 197 "sintactico.y"
+#line 204 "sintactico.y"
     {/*printf("funcion \n");*/;}
     break;
 
   case 48:
-#line 205 "sintactico.y"
+#line 212 "sintactico.y"
     {existeVarAsignar(startProList->headTvarPtr,startProList->headTvarPtr->nextPtr,(yyvsp[(1) - (1)].texto));;}
     break;
 
   case 49:
-#line 205 "sintactico.y"
+#line 212 "sintactico.y"
     {ochoExp(8);;}
     break;
 
   case 51:
-#line 207 "sintactico.y"
+#line 214 "sintactico.y"
     {nueveExp();;}
     break;
 
   case 54:
-#line 212 "sintactico.y"
+#line 219 "sintactico.y"
     {eragltc=gltc; gltc=3;;}
     break;
 
   case 55:
-#line 212 "sintactico.y"
+#line 219 "sintactico.y"
     {gltc=eragltc;}
     break;
 
   case 66:
-#line 231 "sintactico.y"
+#line 238 "sintactico.y"
     {eragltc=gltc; gltc=3;;}
     break;
 
   case 67:
-#line 231 "sintactico.y"
+#line 238 "sintactico.y"
     {gltc=eragltc;}
     break;
 
   case 77:
-#line 248 "sintactico.y"
+#line 255 "sintactico.y"
     {dosExp(1);;}
     break;
 
   case 78:
-#line 249 "sintactico.y"
+#line 256 "sintactico.y"
     {dosExp(2);;}
     break;
 
   case 80:
-#line 251 "sintactico.y"
+#line 258 "sintactico.y"
     {cuatroExp();;}
     break;
 
   case 84:
-#line 255 "sintactico.y"
+#line 262 "sintactico.y"
     {tresExp(3);;}
     break;
 
   case 85:
-#line 256 "sintactico.y"
+#line 263 "sintactico.y"
     {tresExp(4);;}
     break;
 
   case 87:
-#line 258 "sintactico.y"
+#line 265 "sintactico.y"
     {cincoExp();;}
     break;
 
   case 91:
-#line 262 "sintactico.y"
+#line 269 "sintactico.y"
     {seisExp();;}
     break;
 
   case 92:
-#line 262 "sintactico.y"
+#line 269 "sintactico.y"
     {sieteExp();;}
     break;
 
   case 93:
-#line 263 "sintactico.y"
+#line 270 "sintactico.y"
     {eragltc=gltc; gltc=4;;}
     break;
 
   case 94:
-#line 263 "sintactico.y"
+#line 270 "sintactico.y"
     {gltc=eragltc;;}
     break;
 
   case 95:
-#line 264 "sintactico.y"
+#line 271 "sintactico.y"
     {diezExp((yyvsp[(1) - (1)].texto));;}
     break;
 
   case 96:
-#line 265 "sintactico.y"
-    {unoExpInt(" ");;}
+#line 272 "sintactico.y"
+    {unoExpIntCons((yyvsp[(1) - (1)].numero));;}
     break;
 
   case 97:
-#line 266 "sintactico.y"
-    {unoExpFloat(" ");;}
+#line 273 "sintactico.y"
+    {unoExpFloatCons((yyvsp[(1) - (1)].real));;}
     break;
 
   case 98:
-#line 267 "sintactico.y"
-    {unoExpStr(" ");;}
+#line 274 "sintactico.y"
+    {/*unoExpStrCons($2);*/;}
     break;
 
   case 99:
-#line 271 "sintactico.y"
+#line 278 "sintactico.y"
     {ochoExp(5);;}
     break;
 
   case 100:
-#line 272 "sintactico.y"
+#line 279 "sintactico.y"
     {ochoExp(6);;}
     break;
 
   case 101:
-#line 273 "sintactico.y"
+#line 280 "sintactico.y"
     {ochoExp(7);;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1850 "sintactico.tab.c"
+#line 1857 "sintactico.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2060,7 +2067,7 @@ yyreturn:
 }
 
 
-#line 294 "sintactico.y"
+#line 301 "sintactico.y"
 
 /**************************************************************************
                       * Codigo C Adicional *
@@ -2113,9 +2120,12 @@ void unoExpInt(char *nombre){
     insertVar(&startProList->headTvarPtr,nombre,estipo,contEntTmp);
     contEntTmp++;
   }
+}
+void unoExpIntCons(int valor){
   if (gltc==4){
     push (&PilaO,contEntCons);
     push(&PTipos,1);
+    insertTabCons (&startTabCons,valor,contEntCons);
     contEntCons++;
   }
 }
@@ -2139,9 +2149,12 @@ void unoExpFloat(char *nombre){
     insertVar(&startProList->headTvarPtr,nombre,estipo,contFlotTmp);
     contFlotTmp++;
   }
+}
+void unoExpFloatCons(int valor){
   if (gltc==4){
     push(&PilaO,contFlotCons);
     push(&PTipos,2);
+    insertTabCons (&startTabCons,valor,contFlotCons);
     contFlotCons++;
   }
 }
@@ -2164,9 +2177,12 @@ void unoExpStr(char *nombre){
     insertVar(&startProList->headTvarPtr,nombre,estipo,contStrTmp);
     contStrTmp++;
   }
+}
+void unoExpStrCons(int valor){
   if (gltc==4){
     push (&PilaO, contStrCons);
     push(&PTipos,3);
+    insertTabCons (&startTabCons,valor,contStrCons);
     contStrCons++;
   }
 }
@@ -2189,9 +2205,12 @@ void unoExpBool(char *nombre){
     insertVar(&startProList->headTvarPtr,nombre,estipo,contBoolTmp);
     contBoolTmp++;
   }
+}
+void unoExpBoolCons(int valor){
   if (gltc==4){
     push (&PilaO, contBoolCons);
     push(&PTipos,4);
+    insertTabCons (&startTabCons,valor,contBoolCons);
     contBoolCons++;
   }
 }
@@ -2489,6 +2508,7 @@ int main(int argc,char **argv){
 
   printTables( startProList );
   printCuadruplos ( startCuadruplos );
+  printTabCons( startTabCons);
   return 0;
 }
 /*****************************************************************/
