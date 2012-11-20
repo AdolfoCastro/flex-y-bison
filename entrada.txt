@@ -1,7 +1,7 @@
 program Algo {
 	function int Main (){
 		int al;
-		al=(3+5);
+		al=(1+3)+3;
 	}
 
 
