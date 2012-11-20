@@ -7,6 +7,7 @@ struct cuadruplos{
 };
 typedef struct cuadruplos Cuadruplos;
 typedef Cuadruplos *CuadruplosPtr;
+int contSaltos =0;
 
 /*******************************Prototypes*************************/
 void insertCuadruplos( CuadruplosPtr *sPtr, int oper, int Operando1,int Operando2,int Resultado);
@@ -61,6 +62,7 @@ void printCuadruplos( CuadruplosPtr currentPtr ){
 
       //puts( "NULL\n" );
    } // end else
+   printf("%d\n",contSaltos );
 }
 void escribeCuadruplos(CuadruplosPtr currentPtr){
    FILE *archivo;/*El manejador de archivo*/
@@ -74,7 +76,8 @@ void escribeCuadruplos(CuadruplosPtr currentPtr){
       // while not the end of the list
       while ( currentPtr != NULL ) { 
          fprintf(archivo, "%d,%d,%d,%d \n", currentPtr->operacion, currentPtr->dirOperando1, currentPtr->dirOperando2, currentPtr->dirResultado);/*Escribimos en el archivo*/
-         currentPtr = currentPtr->nextPtr;   
+         currentPtr = currentPtr->nextPtr;
+         contSaltos++;   
       } // end while
 
       //puts( "NULL\n" );

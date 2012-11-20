@@ -126,7 +126,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 66 "sintactico.y"
+#line 69 "sintactico.y"
 {
   float real;
   int numero;

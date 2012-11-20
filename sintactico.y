@@ -13,6 +13,7 @@
 #include "cuadruplos.c"
 #include "semantica.c"
 #include "tabcons.c"
+
 //cosas de flex y bison
 extern int yylex(void);
 extern char *yytext;
@@ -39,7 +40,9 @@ void ochoExp();
 void nueveExp();
 void diezExp(char *nombre);
 //Estatuto IF ELSE
-void unoEstIf(int tipoComp);
+void cuadruplosComparaciones(int tipoComp);
+void unoEstIf();
+void dosEstIf();
 
 
 //Estatuto WHILE
@@ -218,10 +221,10 @@ m:NVAR;
 m:cons;
 
 /**********condicion*************/
-condicion:{eragltc=gltc; gltc=3;}IF PARA k PARC LLAVEA bloque LLAVEC l{gltc=eragltc};
+condicion:{eragltc=gltc; gltc=3;}IF PARA k PARC{unoEstIf();} LLAVEA bloque LLAVEC l{gltc=eragltc};
 k:expresion k;
 k:vacio;
-l:ELSE LLAVEA bloque LLAVEC;
+l:ELSE{dosEstIf();} LLAVEA bloque LLAVEC;
 l:vacio;
 
 
@@ -277,11 +280,10 @@ z:COMILLA CSTR COMILLA{/*unoExpStrCons($2);*/};
 
 
 /**********easignacion*************/
-easignacion:MAYOR{ochoExp(5);};
-easignacion:MENOR{ochoExp(6);};
-easignacion:DIFE{ochoExp(7);};
-easignacion:IGUAL IGUAL{unoEstIf(11);};
-
+easignacion:IGUAL IGUAL{cuadruplosComparaciones(11);};
+easignacion:MAYOR{cuadruplosComparaciones(12);};
+easignacion:MENOR{cuadruplosComparaciones(13);};
+easignacion:DIFE{cuadruplosComparaciones(14);};
 /**********ologico*************/
 ologico:AND;
 ologico:OR;
@@ -312,25 +314,25 @@ int contEntGlo=0;
 int contFlotGlo=1000;
 int contStrGlo=2000;
 int contBoolGlo=3000;
-int contSaltosGlo=4000;
+//int contSaltosGlo=4000;
 /*******************Locales********************/
 int contEntLoc=5000;
 int contFlotLoc=6000;
 int contStrLoc=7000;
 int contBoolLoc=8000;
-int contSaltosLoc=9000;
+//int contSaltosLoc=9000;
 /*******************Temporales*****************/
 int contEntTmp=10000;
 int contFlotTmp=11000;
 int contStrTmp=12000;
 int contBoolTmp=13000;
-int contSaltosTmp=14000;
+//int contSaltosTmp=14000;
 /*******************Constantes*****************/
 int contEntCons=15000;
 int contFlotCons=16000;
 int contStrCons=17000;
 int contBoolCons=18000;
-int contSaltosCons=19000; 
+//int contSaltosCons=19000;
 
 void unoExpInt(char *nombre){
   //printf("%d\n",vEntera );
@@ -354,6 +356,7 @@ void unoExpInt(char *nombre){
   }
 }
 void unoExpIntCons(int valor){
+  char buffer [50];
   if (gltc==4){
     push (&PilaO,contEntCons);
     push(&PTipos,1);
@@ -383,10 +386,11 @@ void unoExpFloat(char *nombre){
   }
 }
 void unoExpFloatCons(int valor){
+  char buffer [50];
   if (gltc==4){
     push(&PilaO,contFlotCons);
     push(&PTipos,2);
-    insertTabCons (&startTabCons,valor,contFlotCons);
+    insertTabCons (&startTabCons,valor,contEntCons);
     contFlotCons++;
   }
 }
@@ -414,7 +418,7 @@ void unoExpStrCons(int valor){
   if (gltc==4){
     push (&PilaO, contStrCons);
     push(&PTipos,3);
-    insertTabCons (&startTabCons,valor,contStrCons);
+    //insertTabCons (&startTabCons,valor,contStrCons);
     contStrCons++;
   }
 }
@@ -442,7 +446,7 @@ void unoExpBoolCons(int valor){
   if (gltc==4){
     push (&PilaO, contBoolCons);
     push(&PTipos,4);
-    insertTabCons (&startTabCons,valor,contBoolCons);
+    //insertTabCons (&startTabCons,valor,contBoolCons);
     contBoolCons++;
   }
 }
@@ -705,9 +709,30 @@ void diezExp(char *nombre){
       exit(EXIT_FAILURE);
     }
 }
-void unoEstIf(int tipoComp){
-  
+void cuadruplosComparaciones(int tipoComp){
+  int operacion;
+  int operando1;
+  int operando2;
+  int resultado;
+  operacion=tipoComp;
+  operando2=PilaO->data;
+  pop(&PilaO);
+  operando1=PilaO->data;
+  pop(&PilaO);
+  resultado = contBoolTmp;
+  contBoolTmp++;
+  insertCuadruplos( &startCuadruplos, operacion, operando1, operando2, resultado);
 }
+void unoEstIf(){
+  //21 gotof
+  insertCuadruplos(&startCuadruplos, 21,PilaO->data,0,0);
+  pop(&PilaO);
+  push (&Saltos,contSaltos-1);
+}
+void dosEstIf(){
+  insertCuadruplos(&startCuadruplos,20,0,0,0);
+}
+
 void yyerror(char *s){
   printf("Error sintactico %s \n",s);
 }
@@ -716,6 +741,8 @@ int main(int argc,char **argv){
   PilaO = NULL;// points to stack top
   POper = NULL;
   PTipos = NULL;
+  Saltos = NULL;
+
   int value; // int input by user
   
   if (argc>1)
@@ -727,7 +754,7 @@ int main(int argc,char **argv){
   yyparse();
   escribeCuadruplos( startCuadruplos );
   escribeTabCons(startTabCons);
-  /*impreciones de prueba
+  //impreciones de prueba
   printf("PilaO \n");
   printStack( PilaO );
   printf("POper \n");
@@ -740,5 +767,5 @@ int main(int argc,char **argv){
   printCuadruplos ( startCuadruplos );
   printTabCons( startTabCons);
   return 0;
-  */
+  
 }
