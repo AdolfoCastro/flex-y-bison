@@ -12,6 +12,7 @@ typedef Cuadruplos *CuadruplosPtr;
 void insertCuadruplos( CuadruplosPtr *sPtr, int oper, int Operando1,int Operando2,int Resultado);
 int isEmtpyCuadruplos( CuadruplosPtr sPtr );
 void printCuadruplos( CuadruplosPtr currentPtr );
+void escribeCuadruplos(CuadruplosPtr currentPtr);
 
 void insertCuadruplos( CuadruplosPtr *sPtr, int oper, int Operando1,int Operando2,int Resultado){
 	{ 
@@ -60,5 +61,24 @@ void printCuadruplos( CuadruplosPtr currentPtr ){
 
       //puts( "NULL\n" );
    } // end else
+}
+void escribeCuadruplos(CuadruplosPtr currentPtr){
+   FILE *archivo;/*El manejador de archivo*/
+     archivo=fopen("codigointermedio.txt", "w");
+     if(archivo==NULL)/*So no lo logramos abrir, salimos*/
+         exit(EXIT_FAILURE);
+   if ( isEmtpyCuadruplos(currentPtr) ) {
+      puts( "List is empty.\n" );
+   } // end if
+   else {
+      // while not the end of the list
+      while ( currentPtr != NULL ) { 
+         fprintf(archivo, "%d,%d,%d,%d \n", currentPtr->operacion, currentPtr->dirOperando1, currentPtr->dirOperando2, currentPtr->dirResultado);/*Escribimos en el archivo*/
+         currentPtr = currentPtr->nextPtr;   
+      } // end while
+
+      //puts( "NULL\n" );
+   } // end else
+   fclose(archivo);/*Cerramos el archivo*/
 }
 

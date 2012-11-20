@@ -735,6 +735,9 @@ int main(int argc,char **argv){
   printStack( PTipos );
   printf("Saltos \n");
   printStack( Saltos );
+  
+  escribeCuadruplos( startCuadruplos );
+  imprimeTabCons(startTabCons);
 
   printTables( startProList );
   printCuadruplos ( startCuadruplos );
