@@ -1,7 +1,9 @@
 program Algo {
 	function int Main (){
-		int al;
-		al=(1+2+3+4+5+6+7+8+9+10+1.9);
+		int a;
+		if(a<0){
+
+		}
 	}
 
 

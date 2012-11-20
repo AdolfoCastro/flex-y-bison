@@ -42,7 +42,7 @@ BOOLEAN 	(TRUE|FALSE)?
 
 "if"	{return(IF);}
 "else"	{return(ELSE);}
-"for"	{return(FOR);}
+"while"	{return(WHILE);}
 
 {INTEGER} 	{yylval.numero=atoi(yytext); return(CINT);}
 {BOOLEAN} 	{yylval.texto=strdup(yytext); return(CBOOL);}

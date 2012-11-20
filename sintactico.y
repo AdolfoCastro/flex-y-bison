@@ -3,77 +3,80 @@
 /**************************************************************** 
                      * Declaraciones en C *
  ****************************************************************/
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <string.h>
-	#include <math.h>
-  #include "stack.c"
-  #include "tvariables.c"
-  #include "cuadruplos.c"
-  #include "semantica.c"
-  #include "tabcons.c"
+//includes
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include "stack.c"
+#include "tvariables.c"
+#include "cuadruplos.c"
+#include "semantica.c"
+#include "tabcons.c"
+//cosas de flex y bison
+extern int yylex(void);
+extern char *yytext;
+extern int linea;
+extern FILE *yyin;
+void yyerror(char *s);
+//prototipos
+//Expreciones
+void unoExpInt(char *nombre);
+void unoExpIntCons(int valor);
+void unoExpFloat(char *nombre);
+void unoExpFloatCons(int valor);
+void unoExpStr(char *nombre);
+void unoExpStrCons(int valor);
+void unoExpBool(char *nombre);
+void unoExpBoolCons(int valor);
+void dosExp(int operando);
+void tresExp(int operando);
+void cuatroExp();
+void cincoExp();
+void seisExp();
+void sieteExp();
+void ochoExp();
+void nueveExp();
+void diezExp(char *nombre);
+//Estatuto IF ELSE
+void unoEstIf(int tipoComp);
 
-	extern int yylex(void);
-	extern char *yytext;
-	extern int linea;
-  extern FILE *yyin;
-  void yyerror(char *s);
 
-  void unoExpInt(char *nombre);
-  void unoExpFloat(char *nombre);
-  void unoExpStr(char *nombre);
-  void unoExpBool(char *nombre);
-  void dosExp(int operando);
-  void tresExp(int operando);
-  void cuatroExp();
-  void cincoExp();
-  void seisExp();
-  void sieteExp();
-  void ochoExp();
-  void nueveExp();
-  void diezExp(char *nombre);
-
-	int memoriaInt();
-  int operando;
-  int gltc;
-  int eragltc;
-  int estipo;
-  char *nomConsInt;
-  char *nomConsFloat;
-
-  void unoExpIntCons(int valor);
-  void unoExpFloatCons(int valor);
-  void unoExpStrCons(int valor);
-  void unoExpBoolCons(int valor);
-
-  StackNodePtr apuntadorApOper;
-
-  int esSumResMulDiv;
-
-  char *nombrefuncion;
-  TproNodoPtr startProList = NULL;
-  CuadruplosPtr  startCuadruplos =  NULL;
-  TabConsPtr startTabCons = NULL;
+//Estatuto WHILE
+//
+//globales
+int memoriaInt();
+int operando;
+int gltc;
+int eragltc;
+int estipo;
+char *nomConsInt;
+char *nomConsFloat;
+int esSumResMulDiv;
+char *nombrefuncion;
+//apuntadores estructuras
+StackNodePtr apuntadorApOper;
+TproNodoPtr startProList = NULL;
+CuadruplosPtr  startCuadruplos =  NULL;
+TabConsPtr startTabCons = NULL;
 %}
 /*******************************************************************
                        Declaraciones de Bison *
  *******************************************************************/
-%union
-{
+%union{
   float real;
   int numero;
   char* texto;
 }
-
 %start programa;
-
+//constantes
 %token <texto> ID
 %token <texto> NVAR
 %token <numero> CINT
 %token <real> CFLOAT
 %token <texto> CSTR
 %token <texto> CBOOL
-
+//palabras reservadas
 %token PROG
 %token VAR
 %token NEW
@@ -86,11 +89,11 @@
 %token STR
 %token BOOL
 %token LIST
-
+//palabras reservadas(condicion y ciclo)
 %token IF
 %token ELSE
-%token FOR
-
+%token WHILE
+//palabras reservadas(signos)
 %token PARA
 %token PARC
 %token COMA
@@ -109,7 +112,6 @@
 %token AND
 %token OR
 %token COMILLA
-
 %%
 /*****************************************************************
                    * Reglas Gramaticales *
@@ -235,7 +237,7 @@ o:vacio;
 lectura:READ PARA tipo PARC PTCM;
 
 /**********ciclo*************/
-ciclo:{eragltc=gltc; gltc=3;}FOR PARA expresion PARC LLAVEA bloque LLAVEC{gltc=eragltc};
+ciclo:{eragltc=gltc; gltc=3;}WHILE PARA expresion PARC LLAVEA bloque LLAVEC{gltc=eragltc};
 
 /**********expresion*************/
 expresion: exp p;
@@ -278,7 +280,7 @@ z:COMILLA CSTR COMILLA{/*unoExpStrCons($2);*/};
 easignacion:MAYOR{ochoExp(5);};
 easignacion:MENOR{ochoExp(6);};
 easignacion:DIFE{ochoExp(7);};
-easignacion:IGUAL IGUAL;
+easignacion:IGUAL IGUAL{unoEstIf(11);};
 
 /**********ologico*************/
 ologico:AND;
@@ -464,7 +466,6 @@ void tresExp(int operando){
       break;
   }
 }
-
 void cuatroExp(){
   int tipoRes;
   int resultado;
@@ -513,38 +514,38 @@ void cuatroExp(){
           tipoRes=4;
          }
       }
-      printf ("%d ", POper->data);
+      //printf ("%d ", POper->data);
       int operacion=POper->data;
       pop(&POper);
-      printf("%d ", PilaO->data);
+      //printf("%d ", PilaO->data);
       int operando2 = PilaO->data;
       pop(&PilaO);
-      printf("%d ", PilaO->data);
+      //printf("%d ", PilaO->data);
       int operando1 = PilaO->data;
       pop(&PilaO);
       push(&PTipos,tipoRes);
 
       if(tipoRes == 1){
         push(&PilaO, contEntTmp);
-        printf("%d\n", contEntTmp );
+        //printf("%d\n", contEntTmp );
         resultado = contEntTmp;
         contEntTmp++;
       }
       if(tipoRes == 2){
         push(&PilaO, contFlotTmp);
-        printf("%d\n", contFlotTmp );
+        //printf("%d\n", contFlotTmp );
         resultado = contFlotTmp;
         contFlotTmp++;
       }
       if(tipoRes == 3){
         push(&PilaO, contStrTmp);
-        printf("%d\n", contStrTmp );
+        //printf("%d\n", contStrTmp );
         resultado = contStrTmp;
         contStrTmp++;
       }
       if(tipoRes == 4){
         push(&PilaO, contBoolTmp);
-        printf("%d\n", contBoolTmp );
+        //printf("%d\n", contBoolTmp );
         resultado = contBoolTmp;
         contBoolTmp++;
       }
@@ -646,7 +647,6 @@ void seisExp(){
 void sieteExp(){
   pop(&POper);
 }
-
 void ochoExp(eAsigna){
   switch (eAsigna){
     case 5:
@@ -663,22 +663,20 @@ void ochoExp(eAsigna){
       break;
   }
 }
-
 void nueveExp(){
-   if ( POper == NULL ) {
+ if ( POper == NULL ) {
       //puts( "The stack is empty.\n" );
-   } // end if
-  else { 
-    esSumResMulDiv = POper->data;
+ }else { 
+  esSumResMulDiv = POper->data;
     if ( esSumResMulDiv == 5 || esSumResMulDiv == 6 || esSumResMulDiv == 7|| esSumResMulDiv == 8 ){
       pop ( &PTipos );
-      printf ("%d ", POper->data);
+      //printf ("%d ", POper->data);
       int operacion=POper->data;
       pop(&POper);
-      printf("%d ", PilaO->data);
+      //printf("%d ", PilaO->data);
       int operando1 = PilaO->data;
       pop(&PilaO);
-      printf("%d \n", PilaO->data);
+      //printf("%d \n", PilaO->data);
       int resultado = PilaO->data;
       pop(&PilaO);
       int operando2=0;
@@ -686,8 +684,8 @@ void nueveExp(){
     }
   }
 }
-
 void diezExp(char *nombre){
+  //revisa que los nombres de las variables y funciones no existan 
     TvarNodoPtr existePtr;
     existePtr = startProList->headTvarPtr;
     int esta = 0;
@@ -707,9 +705,10 @@ void diezExp(char *nombre){
       exit(EXIT_FAILURE);
     }
 }
-
-void yyerror(char *s)
-{
+void unoEstIf(int tipoComp){
+  
+}
+void yyerror(char *s){
   printf("Error sintactico %s \n",s);
 }
 /**************** main ****************/
@@ -726,7 +725,9 @@ int main(int argc,char **argv){
     yyin=fopen("entrada.txt","rt");
 
   yyparse();
-  
+  escribeCuadruplos( startCuadruplos );
+  escribeTabCons(startTabCons);
+  /*impreciones de prueba
   printf("PilaO \n");
   printStack( PilaO );
   printf("POper \n");
@@ -735,13 +736,9 @@ int main(int argc,char **argv){
   printStack( PTipos );
   printf("Saltos \n");
   printStack( Saltos );
-  
-  escribeCuadruplos( startCuadruplos );
-  imprimeTabCons(startTabCons);
-
   printTables( startProList );
   printCuadruplos ( startCuadruplos );
   printTabCons( startTabCons);
   return 0;
+  */
 }
-/*****************************************************************/

@@ -59,7 +59,7 @@
      LIST = 275,
      IF = 276,
      ELSE = 277,
-     FOR = 278,
+     WHILE = 278,
      PARA = 279,
      PARC = 280,
      COMA = 281,
@@ -101,7 +101,7 @@
 #define LIST 275
 #define IF 276
 #define ELSE 277
-#define FOR 278
+#define WHILE 278
 #define PARA 279
 #define PARC 280
 #define COMA 281
@@ -126,7 +126,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 62 "sintactico.y"
+#line 66 "sintactico.y"
 {
   float real;
   int numero;
