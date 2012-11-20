@@ -232,7 +232,7 @@ ciclo:{eragltc=gltc; gltc=3;}FOR PARA expresion PARC LLAVEA bloque LLAVEC{gltc=e
 
 /**********expresion*************/
 expresion: exp p;
-p:easignacion exp {nueveExp();};
+p:easignacion exp;
 p:vacio;
 
 /**********llamada*************/
@@ -271,7 +271,7 @@ z:COMILLA CSTR COMILLA{unoExpStr(" ");};
 easignacion:MAYOR{ochoExp(5);};
 easignacion:MENOR{ochoExp(6);};
 easignacion:DIFE{ochoExp(7);};
-easignacion:IGUAL IGUAL{ochoExp(8);};
+easignacion:IGUAL IGUAL;
 
 /**********ologico*************/
 ologico:AND;
@@ -657,12 +657,12 @@ void nueveExp(){
       int operacion=POper->data;
       pop(&POper);
       printf("%d ", PilaO->data);
-      int operando2 = PilaO->data;
-      pop(&PilaO);
-      printf("%d \n", PilaO->data);
       int operando1 = PilaO->data;
       pop(&PilaO);
-      int resultado;
+      printf("%d \n", PilaO->data);
+      int resultado = PilaO->data;
+      pop(&PilaO);
+      int operando2=0;
       insertCuadruplos( &startCuadruplos, operacion, operando1, operando2,resultado);
     }
   }

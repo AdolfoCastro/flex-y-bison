@@ -1759,11 +1759,6 @@ yyreduce:
     {gltc=eragltc;}
     break;
 
-  case 69:
-#line 235 "sintactico.y"
-    {nueveExp();;}
-    break;
-
   case 77:
 #line 248 "sintactico.y"
     {dosExp(1);;}
@@ -1849,14 +1844,9 @@ yyreduce:
     {ochoExp(7);;}
     break;
 
-  case 102:
-#line 274 "sintactico.y"
-    {ochoExp(8);;}
-    break;
-
 
 /* Line 1267 of yacc.c.  */
-#line 1860 "sintactico.tab.c"
+#line 1850 "sintactico.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2437,12 +2427,12 @@ void nueveExp(){
       int operacion=POper->data;
       pop(&POper);
       printf("%d ", PilaO->data);
-      int operando2 = PilaO->data;
-      pop(&PilaO);
-      printf("%d \n", PilaO->data);
       int operando1 = PilaO->data;
       pop(&PilaO);
-      int resultado;
+      printf("%d \n", PilaO->data);
+      int resultado = PilaO->data;
+      pop(&PilaO);
+      int operando2=0;
       insertCuadruplos( &startCuadruplos, operacion, operando1, operando2,resultado);
     }
   }
