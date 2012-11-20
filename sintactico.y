@@ -201,13 +201,6 @@ i:bloque;
 i:;
 j:COMA h;
 
-/**********asignacion*************/
-asignacion:NVAR{existeVarAsignar(startProList->headTvarPtr,startProList->headTvarPtr->nextPtr,$1);} IGUAL{ochoExp(8);} m PTCM;
-//m:clist;
-m:expresion{nueveExp();};
-m:NVAR;
-m:cons;
-
 /**********condicion*************/
 condicion:{eragltc=gltc; gltc=3;}IF PARA k PARC LLAVEA bloque LLAVEC l{gltc=eragltc};
 k:expresion k;
@@ -215,7 +208,12 @@ k:vacio;
 l:ELSE LLAVEA bloque LLAVEC;
 l:vacio;
 
-
+/**********asignacion*************/
+asignacion:NVAR{existeVarAsignar(startProList->headTvarPtr,startProList->headTvarPtr->nextPtr,$1);} IGUAL {ochoExp(8);} m PTCM;
+//m:clist;
+m:expresion{nueveExp();};
+m:NVAR;
+m:cons;
 
 /**********escritura*************/
 escritura:PRINT PARA n PARC PTCM;
@@ -232,7 +230,7 @@ ciclo:{eragltc=gltc; gltc=3;}FOR PARA expresion PARC LLAVEA bloque LLAVEC{gltc=e
 
 /**********expresion*************/
 expresion: exp p;
-p:easignacion exp {nueveExp();};
+p:easignacion exp;
 p:vacio;
 
 /**********llamada*************/
@@ -259,10 +257,10 @@ v: F{cincoExp();}u v;
 v:vacio;
 
 F:w;
-w:PARA{seisExp();} exp PARC{sieteExp();};
 w:{eragltc=gltc; gltc=4;} z {gltc=eragltc;};
+w:PARA{seisExp();} exp PARC{sieteExp();};
 z:NVAR{diezExp($1);};
-z:CINT{unoExpInt(" ");};
+w:CINT{unoExpInt(" ");};
 z:CFLOAT{unoExpFloat(" ");};
 z:COMILLA CSTR COMILLA{unoExpStr(" ");};
 
@@ -271,7 +269,7 @@ z:COMILLA CSTR COMILLA{unoExpStr(" ");};
 easignacion:MAYOR{ochoExp(5);};
 easignacion:MENOR{ochoExp(6);};
 easignacion:DIFE{ochoExp(7);};
-easignacion:IGUAL IGUAL{ochoExp(8);};
+easignacion:IGUAL IGUAL;
 
 /**********ologico*************/
 ologico:AND;
@@ -657,12 +655,12 @@ void nueveExp(){
       int operacion=POper->data;
       pop(&POper);
       printf("%d ", PilaO->data);
-      int operando2 = PilaO->data;
-      pop(&PilaO);
-      printf("%d \n", PilaO->data);
       int operando1 = PilaO->data;
       pop(&PilaO);
-      int resultado;
+      printf("%d \n", PilaO->data);
+      int resultado = PilaO->data;
+      pop(&PilaO);
+      int operando2=0;
       insertCuadruplos( &startCuadruplos, operacion, operando1, operando2,resultado);
     }
   }
