@@ -186,6 +186,25 @@ void existeVar(TvarNodoPtr currentPtr, TvarNodoPtr previousPtr, char *nombre)
          existePtr = existePtr->nextPtr;   
       } // end while
 }
+void existeVarAsignar(TvarNodoPtr currentPtr, TvarNodoPtr previousPtr, char *nombre)
+{
+   TvarNodoPtr existePtr;
+   existePtr = currentPtr;
+   int existe=0;
+   int i;
+   while ( existePtr != NULL ) {
+      i = strcmp (nombre, existePtr->nombreVariable);
+      //printf("%s-%s",nombre,existePtr->nombreVariable);
+      if (i == 0){
+         existe=1;
+      }
+         existePtr = existePtr->nextPtr;   
+   } // end while
+   if (existe==0){
+      printf("La variable -%s- a la que le quieres asignar un valor no existe \n", nombre);
+         exit (EXIT_FAILURE);
+   }
+}
 
 /*
 int main (void){

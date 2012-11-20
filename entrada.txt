@@ -1,13 +1,8 @@
 program Algo {
-
-	int algo;
-	int algoos;
-
-
 	function int Main (){
-		int algo;
-		int alogss;
-		if (algo = 3*4/3){
-		}
+		int al;
+		al=(1+3)+3;
 	}
+
+
 }

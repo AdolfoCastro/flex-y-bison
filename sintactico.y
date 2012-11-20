@@ -9,6 +9,8 @@
 	#include <math.h>
   #include "stack.c"
   #include "tvariables.c"
+  #include "cuadruplos.c"
+  #include "semantica.c"
 
 	extern int yylex(void);
 	extern char *yytext;
@@ -40,11 +42,11 @@
 
   StackNodePtr apuntadorApOper;
 
-
   int esSumResMulDiv;
 
   char *nombrefuncion;
   TproNodoPtr startProList = NULL;
+  CuadruplosPtr  startCuadruplos =  NULL;
 %}
 /*******************************************************************
                        Declaraciones de Bison *
@@ -199,6 +201,13 @@ i:bloque;
 i:;
 j:COMA h;
 
+/**********asignacion*************/
+asignacion:NVAR{existeVarAsignar(startProList->headTvarPtr,startProList->headTvarPtr->nextPtr,$1);} IGUAL{ochoExp(8);} m PTCM;
+//m:clist;
+m:expresion{nueveExp();};
+m:NVAR;
+m:cons;
+
 /**********condicion*************/
 condicion:{eragltc=gltc; gltc=3;}IF PARA k PARC LLAVEA bloque LLAVEC l{gltc=eragltc};
 k:expresion k;
@@ -206,12 +215,7 @@ k:vacio;
 l:ELSE LLAVEA bloque LLAVEC;
 l:vacio;
 
-/**********asignacion*************/
-asignacion:NVAR IGUAL m PTCM;
-m:clist;
-m:expresion;
-m:NVAR;
-m:cons;
+
 
 /**********escritura*************/
 escritura:PRINT PARA n PARC PTCM;
@@ -267,7 +271,7 @@ z:COMILLA CSTR COMILLA{unoExpStr(" ");};
 easignacion:MAYOR{ochoExp(5);};
 easignacion:MENOR{ochoExp(6);};
 easignacion:DIFE{ochoExp(7);};
-easignacion:IGUAL{ochoExp(8);};
+easignacion:IGUAL IGUAL{ochoExp(8);};
 
 /**********ologico*************/
 ologico:AND;
@@ -443,46 +447,177 @@ void tresExp(int operando){
 }
 
 void cuatroExp(){
+  int tipoRes;
+  int resultado;
   if ( POper == NULL ) {
       //puts( "The stack is empty.\n" );
    } // end if
   else { 
     esSumResMulDiv = POper->data;
     if ( esSumResMulDiv == 1|| esSumResMulDiv == 2){
+      int tipo1=PTipos->data;
       pop ( &PTipos );
+      int tipo2=PTipos->data;
       pop ( &PTipos );
+      if(tipo1==1){
+        tipo1=0;
+      }else if(tipo1==2){
+        tipo1=2;
+      }else if(tipo1==3){
+        tipo1=5;
+      }else if(tipo1==4){
+        tipo1=4;
+      }
+      if(tipo2==1){
+        tipo2=0;
+      }else if(tipo2==2){
+        tipo2=2;
+      }else if(tipo2==3){
+        tipo2=5;
+      }else if(tipo2==4){
+        tipo2=4;
+      }
+      
+      if(strcmp(cubo[tipo1][tipo2][esSumResMulDiv],"x")==0){
+        printf("%s\n","operacion no valida" );
+      }else{
+         if(strcmp(cubo[tipo1][tipo2][esSumResMulDiv],"i")==0){
+          tipoRes=1;
+         }
+         if(strcmp(cubo[tipo1][tipo2][esSumResMulDiv],"f")==0){
+          tipoRes=2;
+         }
+         if(strcmp(cubo[tipo1][tipo2][esSumResMulDiv],"s")==0){
+          tipoRes=3;
+         }
+         if(strcmp(cubo[tipo1][tipo2][esSumResMulDiv],"b")==0){
+          tipoRes=4;
+         }
+      }
       printf ("%d ", POper->data);
+      int operacion=POper->data;
       pop(&POper);
       printf("%d ", PilaO->data);
+      int operando2 = PilaO->data;
       pop(&PilaO);
       printf("%d ", PilaO->data);
+      int operando1 = PilaO->data;
       pop(&PilaO);
-      push(&PTipos,1);
-      push(&PilaO, contEntTmp);
-      printf("%d\n", contEntTmp );
-      contEntTmp++;
+      push(&PTipos,tipoRes);
+
+      if(tipoRes == 1){
+        push(&PilaO, contEntTmp);
+        printf("%d\n", contEntTmp );
+        resultado = contEntTmp;
+        contEntTmp++;
+      }
+      if(tipoRes == 2){
+        push(&PilaO, contFlotTmp);
+        printf("%d\n", contFlotTmp );
+        resultado = contFlotTmp;
+        contFlotTmp++;
+      }
+      if(tipoRes == 3){
+        push(&PilaO, contStrTmp);
+        printf("%d\n", contStrTmp );
+        resultado = contStrTmp;
+        contStrTmp++;
+      }
+      if(tipoRes == 4){
+        push(&PilaO, contBoolTmp);
+        printf("%d\n", contBoolTmp );
+        resultado = contBoolTmp;
+        contBoolTmp++;
+      }
+      insertCuadruplos( &startCuadruplos, operacion, operando1, operando2, resultado);
     }
   }
 }
 void cincoExp(){
+  int tipoRes;
+  int resultado;
   if ( POper == NULL ) {
       //puts( "The stack is empty.\n" );
    } // end if
   else { 
     esSumResMulDiv = POper->data;
     if ( esSumResMulDiv == 3 || esSumResMulDiv == 4){
+      int tipo1 = PTipos->data;
       pop ( &PTipos );
+      int tipo2 = PTipos->data;
       pop ( &PTipos );
+
+      if(tipo1==1){
+        tipo1=0;
+      }else if(tipo1==2){
+        tipo1=2;
+      }else if(tipo1==3){
+        tipo1=5;
+      }else if(tipo1==4){
+        tipo1=4;
+      }
+      if(tipo2==1){
+        tipo2=0;
+      }else if(tipo2==2){
+        tipo2=2;
+      }else if(tipo2==3){
+        tipo2=5;
+      }else if(tipo2==4){
+        tipo2=4;
+      }
+      if(strcmp(cubo[tipo1][tipo2][esSumResMulDiv],"x")==0){
+        printf("%s\n","operacion no valida" );
+      }else{
+         if(strcmp(cubo[tipo1][tipo2][esSumResMulDiv],"i")==0){
+          tipoRes=1;
+         }
+         if(strcmp(cubo[tipo1][tipo2][esSumResMulDiv],"f")==0){
+          tipoRes=2;
+         }
+         if(strcmp(cubo[tipo1][tipo2][esSumResMulDiv],"s")==0){
+          tipoRes=3;
+         }
+         if(strcmp(cubo[tipo1][tipo2][esSumResMulDiv],"b")==0){
+          tipoRes=4;
+         }
+      }
+
       printf ("%d ", POper->data);
+      int operacion=POper->data;
       pop(&POper);
       printf("%d ", PilaO->data);
+      int operando2 = PilaO->data;
       pop(&PilaO);
       printf("%d ", PilaO->data);
+      int operando1 = PilaO->data;
       pop(&PilaO);
-      push(&PTipos,1);
-      push(&PilaO, contEntTmp);
-      printf("%d\n", contEntTmp );
-      contEntTmp++;
+      push(&PTipos,tipoRes);
+
+      if(tipoRes == 1){
+        push(&PilaO, contEntTmp);
+        printf("%d\n", contEntTmp );
+        resultado = contEntTmp;
+        contEntTmp++;
+      }
+      if(tipoRes == 2){
+        push(&PilaO, contFlotTmp);
+        printf("%d\n", contFlotTmp );
+        resultado = contFlotTmp;
+        contFlotTmp++;
+      }
+      if(tipoRes == 3){
+        push(&PilaO, contStrTmp);
+        printf("%d\n", contStrTmp );
+        resultado = contStrTmp;
+        contStrTmp++;
+      }
+      if(tipoRes == 4){
+        push(&PilaO, contBoolTmp);
+        printf("%d\n", contBoolTmp );
+        resultado = contBoolTmp;
+        contBoolTmp++;
+      }
+      insertCuadruplos( &startCuadruplos, operacion, operando1, operando2, resultado);
     }
   }
 }
@@ -519,11 +654,16 @@ void nueveExp(){
     if ( esSumResMulDiv == 5 || esSumResMulDiv == 6 || esSumResMulDiv == 7|| esSumResMulDiv == 8 ){
       pop ( &PTipos );
       printf ("%d ", POper->data);
+      int operacion=POper->data;
       pop(&POper);
       printf("%d ", PilaO->data);
+      int operando2 = PilaO->data;
       pop(&PilaO);
       printf("%d \n", PilaO->data);
+      int operando1 = PilaO->data;
       pop(&PilaO);
+      int resultado;
+      insertCuadruplos( &startCuadruplos, operacion, operando1, operando2,resultado);
     }
   }
 }
@@ -576,28 +716,9 @@ int main(int argc,char **argv){
   printStack( PTipos );
   printf("Saltos \n");
   printStack( Saltos );
-  
 
-
-
-  
-   /*insertPro(&startProList,"uno",1,1);
-   insertVar(&startProList->headTvarPtr,"all",1,12);
-   insertVar(&startProList->headTvarPtr,"ald",1,12);
-   insertVar(&startProList->headTvarPtr,"alw",1,12);
-   insertVar(&startProList->headTvarPtr,"allf",1,12);
-   insertPro(&startProList,"dos",1,2);
-   insertVar(&startProList->headTvarPtr,"alle",1,12);
-   insertVar(&startProList->headTvarPtr,"all23",1,12);
-   insertVar(&startProList->headTvarPtr,"all4",1,12);
-   insertVar(&startProList->headTvarPtr,"all1",1,12);
-   insertVar(&startProList->headTvarPtr,"all5",1,12);
-   insertPro(&startProList,"tres",1,3);
-   insertVar(&startProList->headTvarPtr,"all",1,12);
-   */
-
-   printTables( startProList );
-
+  printTables( startProList );
+  printCuadruplos ( startCuadruplos );
   return 0;
 }
 /*****************************************************************/
