@@ -62,7 +62,7 @@ void printCuadruplos( CuadruplosPtr currentPtr ){
 
       //puts( "NULL\n" );
    } // end else
-   printf("%d\n",contSaltos );
+   //printf("%d\n",contSaltos );
 }
 void escribeCuadruplos(CuadruplosPtr currentPtr){
    FILE *archivo;/*El manejador de archivo*/

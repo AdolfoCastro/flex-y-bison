@@ -37,8 +37,9 @@ void cincoExp();
 void seisExp();
 void sieteExp();
 void ochoExp();
-void nueveExp();
+void nueveExp(char *nombre);
 void diezExp(char *nombre);
+int direccionVariable(char *nombre);
 //Estatuto IF ELSE
 void cuadruplosComparaciones(int tipoComp);
 void unoEstIf();
@@ -57,6 +58,19 @@ char *nomConsInt;
 char *nomConsFloat;
 int esSumResMulDiv;
 char *nombrefuncion;
+int cuentaInt =0;
+int cuentaFloat=0;
+int cuentaStr=0;
+int cuentaBool=0;
+int globalesInt=0;
+int globalesFloat=0;
+int globalesStr=0;
+int globalesBool=0;
+int mainInt=0;
+int mainFloat=0;
+int mainStr=0;
+int mainBool=0;
+char *nombreDeVariable;
 //apuntadores estructuras
 StackNodePtr apuntadorApOper;
 TproNodoPtr startProList = NULL;
@@ -120,7 +134,29 @@ TabConsPtr startTabCons = NULL;
                    * Reglas Gramaticales *
  *****************************************************************/
 /**********programa*************/
-programa:PROG ID LLAVEA {gltc=1;}{insertPro(&startProList,"Global",5,1);}a {gltc=2;} main b LLAVEC {printf("Programa hecho \n");};
+programa:PROG ID LLAVEA {gltc=1;}{insertPro(&startProList,"Global",5,1);}a
+{
+  globalesInt=cuentaInt;
+  cuentaInt=0;
+  globalesFloat=cuentaFloat;
+  cuentaFloat=0;
+  globalesStr=cuentaStr;
+  cuentaStr=0;
+  globalesBool=cuentaBool;
+  cuentaBool =0;
+}
+ {gltc=2;} main
+ {
+    mainInt=cuentaInt;
+    cuentaInt=0;
+    mainFloat=cuentaFloat;
+    cuentaFloat=0;
+    mainStr=cuentaStr;
+    cuentaStr=0;
+    mainBool=cuentaBool;
+    cuentaBool =0;
+ }
+b LLAVEC {printf("Programa hecho \n");};
 a:vars a;
 a:vacio;
 b:funcion b;
@@ -129,18 +165,22 @@ b:vacio;
 /**********vars*************/
 vars:tipo NVAR cc c PTCM {
   if (estipo==1){
+    cuentaInt++;
     unoExpInt($2);
     //printf("%s\n",$2 );
   }
   if (estipo==2){
+    cuentaFloat++;
     unoExpFloat($2);
     //printf("%s\n",$2 );
   }
   if (estipo==3){
+    cuentaStr++;
     unoExpStr($2);
     //printf("%s\n",$2 );
   }
   if (estipo==4){
+    cuentaBool++;
     unoExpBool($2);
     //printf("%s\n",$2 );
   }
@@ -203,7 +243,7 @@ estatuto:llamada;
 estatuto:vars;
 
 /**********main****************/
-main: FUNC tipo MAIN {insertPro(&startProList,"main",estipo,1);}PARA h PARC LLAVEA i LLAVEC {/*printf("funcion \n");*/};
+main: FUNC MAIN {insertPro(&startProList,"main",estipo,1);}PARA h PARC LLAVEA i LLAVEC {/*printf("funcion \n");*/};
 
 /**********funcion*************/
 funcion: FUNC tipo ID {insertPro(&startProList,$3,estipo,1);}PARA h PARC LLAVEA i LLAVEC {/*printf("funcion \n");*/};
@@ -214,9 +254,9 @@ i:;
 j:COMA h;
 
 /**********asignacion*************/
-asignacion:NVAR{existeVarAsignar(startProList->headTvarPtr,startProList->headTvarPtr->nextPtr,$1);} IGUAL{ochoExp(8);} m PTCM;
+asignacion:NVAR{existeVarAsignar(startProList->headTvarPtr,startProList->headTvarPtr->nextPtr,$1);} {nombreDeVariable=$1;} IGUAL{ochoExp(8);} m PTCM;
 //m:clist;
-m:expresion{nueveExp();};
+m:expresion{nueveExp(nombreDeVariable);};
 m:NVAR;
 m:cons;
 
@@ -667,7 +707,7 @@ void ochoExp(eAsigna){
       break;
   }
 }
-void nueveExp(){
+void nueveExp(char *nombre){
  if ( POper == NULL ) {
       //puts( "The stack is empty.\n" );
  }else { 
@@ -681,12 +721,31 @@ void nueveExp(){
       int operando1 = PilaO->data;
       pop(&PilaO);
       //printf("%d \n", PilaO->data);
-      int resultado = PilaO->data;
+      int resultado = direccionVariable(nombreDeVariable);
       pop(&PilaO);
       int operando2=0;
       insertCuadruplos( &startCuadruplos, operacion, operando1, operando2,resultado);
     }
   }
+}
+int direccionVariable(char *nombre){
+  //revisa que los nombres de las variables y funciones no existan 
+    TvarNodoPtr existePtr;
+    existePtr = startProList->headTvarPtr;
+    int esta = 0;
+    int i;
+    int direccion;
+
+    while ( existePtr != NULL ) {
+      i = strcmp (nombre, existePtr->nombreVariable);
+       //printf("%s-%s",nombre,existePtr->nombreVariable);
+      if (i == 0){
+        direccion = existePtr->direccion;
+        printf ("%d\n",direccion);
+      }
+      existePtr = existePtr->nextPtr;   
+      } // end while
+      return direccion;
 }
 void diezExp(char *nombre){
   //revisa que los nombres de las variables y funciones no existan 
@@ -720,13 +779,18 @@ void cuadruplosComparaciones(int tipoComp){
   operando1=PilaO->data;
   pop(&PilaO);
   resultado = contBoolTmp;
+  push (&PilaO, contBoolTmp);
   contBoolTmp++;
   insertCuadruplos( &startCuadruplos, operacion, operando1, operando2, resultado);
 }
 void unoEstIf(){
   //21 gotof
-  insertCuadruplos(&startCuadruplos, 21,PilaO->data,0,0);
+  int guarda;
+  insertCuadruplos(&startCuadruplos, 21,PilaO->nextPtr->data,0,0);
+  guarda = PilaO->data;
   pop(&PilaO);
+  pop(&PilaO);
+  push(&PilaO,guarda);
   push (&Saltos,contSaltos-1);
 }
 void dosEstIf(){
@@ -754,6 +818,14 @@ int main(int argc,char **argv){
   yyparse();
   escribeCuadruplos( startCuadruplos );
   escribeTabCons(startTabCons);
+  FILE *archivo;/*El manejador de archivo*/
+     archivo=fopen("codigointermedio.txt", "a");
+     if(archivo==NULL)/*So no lo logramos abrir, salimos*/
+         exit(EXIT_FAILURE);
+      fprintf(archivo, "-\n");
+      fprintf(archivo, "%d-%d-%d-%d\n",globalesInt,globalesFloat,globalesStr,globalesBool);
+      fprintf(archivo,"Main-0-%d-%d-%d-%d-%d-%d-%d-%d",mainInt,mainFloat,mainStr,mainBool,contEntTmp-10000,contFlotTmp-11000,contStrTmp-12000,contBoolTmp-13000);
+      fclose(archivo);
   //impreciones de prueba
   printf("PilaO \n");
   printStack( PilaO );
